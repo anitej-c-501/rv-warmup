@@ -1,0 +1,46 @@
+This paper rigorously investigates the effectiveness and not efficiency, of using formal specifications to 
+identify bugs in real-world Java projects. It challenges the assumption that all spec violations are meaningful, 
+showing instead that most violations are false alarms due to lack of context or overly generic mined specs. Its 
+large-scale, developer-validated methodology demonstrates that while specs can be powerful bug detectors, their 
+current form requires significant additional research and improvement.
+
+Previous research often treated any spec violation as a bug or relied on researcher judgment to determine validity. 
+This paper instead adopts a more grounded method by submitting pull requests and allowing project maintainers to judge 
+whether a violation constitutes a real bug. This is a critical methodological shift: correctness is judged by developers
+with domain expertise, reducing the bias introduced by external assumptions. This research also tested on
+200 new projects, a contrast from the 14 old projects other research papers were based on.
+
+This research properly explains how specs work, the kind of specs they used, the kind of tests they generated using Randoop
+and the projects that were selected. The example of the CSC spec clearly illustrates how an issue could be raised even
+if there is no actual violation. I like the distinction between static and dynamic violations and the kind of violations 
+they focused on. They then explained that they categorized errors as TrueBug, FalseAlarm and HardToInspect. I am fascinated 
+about how they would conclude a bug is hard to inspect and why they chose not to submit pull requests for those bugs. I would 
+be interested in a more detailed explanation of how those determinations were made and whether this ambiguity could be reduced 
+via better tooling or visualizations.
+
+As a result of previous research improving efficiency of bug fixing, the overhead of monitoring specs was only
+4.3x. I share the authors' cause for concern at the high rates of false alarms, especially since manual specs had
+a false alarm rate of 82.81% and its automatic counterpart had a false alarm rate of 97.89%.
+What particularly stood out to me was that for automatically mined specs, all violations raised were false alarms 
+when there are variations in libraries. This leads me to believe that specs haven't been updated to account for library
+behavior or API variance.
+
+I liked how the authors analyzed the violations raised by different kind of specs such as BAOS and how for other specs like
+CSM, the violations raised weren't actually of any concern. Out of 199 specs, it is concerning that a whopping 23 of them
+either raised bugs related to performance or used an entirely wrong benchmark for testing.
+
+One of the most important insights from this paper is that bug identification cannot be fully automated in its current form. 
+Developers’ feedback demonstrated that many violations raised by specs were either irrelevant or expected behavior. This justifies
+the paper’s stance that effectiveness of bug-finding tools must be evaluated with developer input—not just based on static code
+analysis. I share the researchers' sentiment that more research should be conducted into improving the effectiveness of bug fixing 
+specs and it should be tested on more recent repositories.
+
+I appreciate the authors explaining the limitations of this study and how it is restricted to only Java maven projects. This makes
+me wonder how bug fixing specs work on other programming languages like C++, Python and Javascript. While this research paper did not
+fix the flaws of the high false alarm rates overnight, it is a big step in the right direction as 23 flawed specs have already been fixed. 
+I believe that this research on fixing bug specs should be referenced and built upon, using more projects and more specs as efficiency 
+keeps improving.
+
+One question I am left with is how will efficiency and effectiveness of bug fixing specs be ensured as programming languages and
+libraries are constantly updated. I am also interested in knowing how LLMs will be useful in evaluating whether a violation is 
+semantically meaningful, especially for domain-specific libraries.
