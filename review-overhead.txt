@@ -1,0 +1,53 @@
+This paper investigates the components of runtime overheads during testing to see how runtime verification can be sped up
+by testing on around 1544 projects. The authors urge future research to focus on reducing runtime overhead on instrumentation,
+a view that I support based on the various diagrams presented in the paper. The paper highlights that even though there has
+been past research on the bug finding ability of runtime verification, almost no research has been done on the components of
+the runtime overhead during verification.
+
+I like how the authors explain how runtime verification works, its benefits over unit testing in terms of bug finding, previous
+research conducted on it and its drawbacks. The paper states that previous research that improved RV overhead was tested on
+carefully curated benchmarks which served as a possible reason of its high runtime overhead. This explanation helps me understand
+the premise of this paper and what the authors do differently to support their conclusions. 
+
+The researchers clearly explain what specs are, how they work and the JavaMOP, the particular spec they use, works. I find their
+focus on RV overhead during monitoring and testing interesting since they are zoning in on one aspect of RV. However, their remaining 
+questions provide a comprehensive idea of the main research topic. The researchers use JavaMOP with a non-default trace collection 
+mode to see which traces are causing the violations. From their findings, what caught my eye was the mean relative overhead of 23.6x
+was higher than the highest average overhead of 9.4x in previous works, highlighting the importance of testing on a varying set of
+open source projects. Their discovery that projects with relatively few monitors having higher overhead suggests that RQ2 and past
+research, while important for reducing RV overhead, may have missed other causes of the high overhead.
+
+Another standout observation was that only 0.13% of trace observations during monitoring were unique, highlighting the wastefulness
+of RV during testing. wastefulness was already established from previous research but the extent of it in this paper shows that it is
+necessary to focus on RV overhead during monitoring. One surprising finding was that there was less waste in tracking events than traces.
+For loop-heavy programs, the discovery that over 50% of traces came from five or fewer methods serves as a foundation for future research
+on reducing the wastefulness of RV.
+
+One major breakthrough of this research is that the majority of the time is spent instrumenting the source code, test code, and the parts of 
+third-party libraries that a project uses. It is particularly high, contributing to almost 75% for the first 3 quartiles of the selected 
+projects. Since past research has primarily focused on monitoring, instrumentation may have proven to be a blind spot for researchers. I
+support the authors' view that future research should focus on this and build upon existing work since it has the potential to greatly
+reduce the overhead for RV. Prior research on monitoring and event handling has helped reduce the RV overhead but should be followed up on
+by researching on faster but correct synchronization. 
+
+Another unique aspect of this research is the researchers' focus on checking the time spent on monitoring test code and third party
+libraries, something ignored by previous research. However, it could not be ignored when running on open-source projects and it was
+discovered that around 36% of monitoring time was spent on test code and third party libraries. I find the dilemma on whether to run
+on these types of code interesting. On one hand, finding bugs on test code and avoiding false positives or negatives is important. On
+the other hand, developers may not be able to change libraries or even tests for the code they work on. I personally believe that since
+a lot of open source software cannot have testing and libraries modified for legal reasons, the trade off for not monitoring test code
+and libraries would be worth it.
+
+I was intrigued by the researchers approach to offline instrumentation. While running JavaMOP after offline instrumentation was faster
+compared to its online counterpart, offline instrumentation was significantly slower for running test code and third party libraries.
+For 1210 versions of 35 projects with the highest disparity between load time instrumentation and offline instrumentation, the researchers
+measured the overhead of five different approaches. All approaches performed well, highlighting the potential for research on instrumentation
+and development of offline instrumentation specifically. This research led to a bug being discovered in JavaMOP which , after fixing, 
+reduced the proportion of violation handling time from 4.82% to 0.03% and for one particular algorithm, reduced overhead from 86.46% to 13.03%. 
+
+With the discovery of instrumentation and the wastefulness of RV during monitoring, I share the authors' sentiments that more research should
+focus on these aspects by testing on open-source libraries. Even though there are assumptions and limitations, this paper has effectively
+built upon past research while showcasing their limitations and paving the way for further RV testing and development.
+
+One question I am left with is that since this study was conducted on Java projects, how would such testing work on languages with a lot
+more libraries like Python. I also wonder how AI developments will help us interpret testing results for future RV experiments.
